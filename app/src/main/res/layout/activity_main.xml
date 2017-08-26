@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ●プロジェクトを新規作成し、 AutoSlideshowApp というプロジェクト名をつけてください
+    スライドさせる画像は、Android端末に保存されているGallery画像を表示させてください（つまり、ContentProviderの利用）
+    ●画面には画像と3つのボタン（進む、戻る、再生/停止）を配置してください
+    進むボタンで1つ先の画像を表示し、戻るボタンで1つ前の画像を表示します
+    最後の画像の表示時に、進むボタンをタップすると、最初の画像が表示されるようにしてください
+    最初の画像の表示時に、戻るボタンをタップすると、最後の画像が表示されるようにしてください
+    再生ボタンをタップすると自動送りが始まり、2秒毎にスライドさせてください
+    自動送りの間は、進むボタンと戻るボタンはタップ不可にしてください
+    再生ボタンをタップすると停止ボタンになり、停止ボタンをタップすると再生ボタンにしてください
+    停止ボタンをタップすると自動送りが止まり、進むボタンと戻るボタンをタップ可能にしてください
+    ユーザがパーミッションの利用を「拒否」した場合にも、アプリの強制終了やエラーが発生しない
+-->
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.techacademy.kenta.imabayashi.autoslideshowapp.MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="進む"
+        android:id="@+id/next_button"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="戻る"
+        android:id="@+id/back_button"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="再生/停止"
+        android:id="@+id/stop_and_start_button"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>
+
