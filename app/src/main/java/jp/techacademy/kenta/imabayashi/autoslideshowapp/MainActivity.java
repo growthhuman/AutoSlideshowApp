@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         // 許可されていないので許可ダイアログを表示する
                         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
                     }
+
                     // Android 5系以下の場合
                 } else {
                     getContentsInfo();
