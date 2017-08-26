@@ -18,11 +18,11 @@ import android.widget.ImageView;
 
 //<!--
 //        ●プロジェクトを新規作成し、 AutoSlideshowApp というプロジェクト名をつけてください
-//        スライドさせる画像は、Android端末に保存されているGallery画像を表示させてください（つまり、ContentProviderの利用）
+//        ●スライドさせる画像は、Android端末に保存されているGallery画像を表示させてください（つまり、ContentProviderの利用）
 //        ●画面には画像と3つのボタン（進む、戻る、再生/停止）を配置してください
-//        進むボタンで1つ先の画像を表示し、戻るボタンで1つ前の画像を表示します
-//        最後の画像の表示時に、進むボタンをタップすると、最初の画像が表示されるようにしてください
-//        最初の画像の表示時に、戻るボタンをタップすると、最後の画像が表示されるようにしてください
+//        ●進むボタンで1つ先の画像を表示し、戻るボタンで1つ前の画像を表示します
+//        ●最後の画像の表示時に、進むボタンをタップすると、最初の画像が表示されるようにしてください
+//        ●最初の画像の表示時に、戻るボタンをタップすると、最後の画像が表示されるようにしてください
 //        再生ボタンをタップすると自動送りが始まり、2秒毎にスライドさせてください
 //        自動送りの間は、進むボタンと戻るボタンはタップ不可にしてください
 //        再生ボタンをタップすると停止ボタンになり、停止ボタンをタップすると再生ボタンにしてください
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // 許可されている
                 //ImageViewを表示して最初の画像を表示する。
-                dispImageView();
+                dispFirstImage();
             } else {
                 // 許可されていないので許可ダイアログを表示する
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
@@ -57,34 +57,50 @@ public class MainActivity extends AppCompatActivity {
             // Android 5系以下の場合
         } else {
             //ImageViewを表示して最初の画像を表示する。
-            dispImageView();
+            dispFirstImage();
         }
 
         //進むボタンのリスナーを作成
         Button button1 = (Button) findViewById(R.id.next_button);
-
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.d("DEBUG","----------------------");
-                getContentsInfo();
+                Log.d("DEBUG","---------1-------------");
+                getNextContentInfo();
             }
         });
+
+        //戻るボタンのリスナーを作成
+        Button button2 = (Button) findViewById(R.id.prev_button);
+        button2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("DEBUG","----------------------");
+                getPrevContentInfo();
+            }
+        });
+
+
     }
 
-    private void getContentsInfo() {
-            cursor.moveToNext();
-            //初期化は外出しして、カーソルを使いまわす。
-            fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-            Long id = cursor.getLong(fieldIndex);
-            Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-            Log.d("ANDROID", "URI : " + imageUri.toString());
+    private void getPrevContentInfo() {
+        if(cursor.moveToPrevious()){
 
-            imageVIew = (ImageView) findViewById(R.id.imageView);
-            imageVIew.setImageURI(imageUri);
+        }else{
+            cursor.moveToLast();
+        }
+
+        //初期化は外出しして、カーソルを使いまわす。
+        fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+        Long id = cursor.getLong(fieldIndex);
+        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+        Log.d("ANDROID", "URI : " + imageUri.toString());
+
+        imageVIew = (ImageView) findViewById(R.id.imageView);
+        imageVIew.setImageURI(imageUri);
     }
 
-    private void dispImageView(){
+    private void dispFirstImage(){
         // 画像の情報を取得する
         resolver = getContentResolver();
         cursor = resolver.query(
@@ -106,4 +122,22 @@ public class MainActivity extends AppCompatActivity {
 
 //        cursor.close();
     }
+
+    private void getNextContentInfo() {
+        if(cursor.moveToNext()){
+
+        }else{
+            cursor.moveToFirst();
+        }
+
+        //初期化は外出しして、カーソルを使いまわす。
+        fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+        Long id = cursor.getLong(fieldIndex);
+        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+        Log.d("ANDROID", "URI : " + imageUri.toString());
+
+        imageVIew = (ImageView) findViewById(R.id.imageView);
+        imageVIew.setImageURI(imageUri);
+    }
+
 }
